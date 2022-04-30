@@ -1,11 +1,12 @@
 import React from "react";
 import Overview from "./Overview";
+import SaleList from "./SaleList";
 import TopBar from "./TopBar";
 
 function Dashboard() {
   return (
     <div className="w-full bg-slate-100" style={{ minHeight: "100vh" }}>
-      <div className="container h-full px-12 mx-auto mt-12">
+      <div className="container h-full px-12 pt-12 mx-auto">
         <div className="flex justify-between">
           <span className="flex">
             <p className="self-center text-2xl font-semibold">Hello Tyrae,</p>
@@ -29,7 +30,8 @@ function Dashboard() {
           </span>
         </div>
         <TopBar />
-        <Overview />
+        {/* <Overview /> */}
+        <SaleList />
       </div>
     </div>
   );

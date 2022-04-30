@@ -10,7 +10,7 @@ function Navbar(props) {
       id: 1,
       name: "Dashboard",
       d: "M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
-      link: "/",
+      link: "/dashboard",
     },
     {
       id: 2,
@@ -149,7 +149,7 @@ function Navbar(props) {
                   <Image src={img} alt="pfp" className="rounded-full" />
                 </span>
                 <span className="flex flex-col">
-                  <p className="font-semibold">Tyrae</p>
+                  <p className="font-semibold">{props.user.email}</p>
                   <p className="font-light text-gray-500">Project Manager</p>
                 </span>
               </div>
