@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 const CallbackCheck = () => {
   // Hydration error fix, More line 30
@@ -10,19 +11,24 @@ const CallbackCheck = () => {
   const { query } = useRouter();
 
   // Obtain Square Token using a POST request
-  const obtainToken = async () => {
-    const response = await fetch(
-      "https://connect.squareupsandbox.com/oauth2/token",
-      {
-        method: "POST",
-        headers: {
-          "Square-Version": "2022-06-16",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    console.log(data);
+  const obtainToken = async (code) => {
+    const options = {
+      headers: {
+        "Square-Version": "2022-06-16",
+        "Content-Type": "application/json",
+      },
+      params: {
+        client_id: process.env.NEXT_PUBLIC_SQ_APPLICATION_ID,
+        client_secret: process.env.NEXT_PUBLIC_SQ_APPLICATION_SECRET,
+        grant_type: "authorization_code",
+        code: code,
+      },
+    };
+
+    axios
+      .post("https://connect.squareupsandbox.com/oauth2/token", {}, options)
+      .then((response) => console.log(response))
+      .catch((err) => console.warn(err));
   };
 
   // Hydration Error fix
@@ -74,8 +80,9 @@ const CallbackCheck = () => {
         );
       }
     } else if ("code" === query.response_type) {
-      var { code } = query.code;
-      return <button onClick={obtainToken}>obtainToken</button>;
+      return (
+        <button onClick={() => obtainToken(query.code)}>obtainToken</button>
+      );
     } else {
       return (
         <div className="container h-screen p-4 mx-auto">
