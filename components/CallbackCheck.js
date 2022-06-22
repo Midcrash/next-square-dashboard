@@ -12,21 +12,23 @@ const CallbackCheck = () => {
 
   // Obtain Square Token using a POST request
   const obtainToken = async (code) => {
-    const options = {
-      headers: {
-        "Square-Version": "2022-06-16",
-        "Content-Type": "application/json",
-      },
-      params: {
-        client_id: process.env.NEXT_PUBLIC_SQ_APPLICATION_ID,
-        client_secret: process.env.NEXT_PUBLIC_SQ_APPLICATION_SECRET,
-        grant_type: "authorization_code",
-        code: code,
-      },
+    const headers = {
+      "Square-Version": "2022-06-16",
+      "Content-Type": "application/json",
+    };
+
+    const params = {
+      client_id: process.env.NEXT_PUBLIC_SQ_APPLICATION_ID,
+      client_secret: process.env.NEXT_PUBLIC_SQ_APPLICATION_SECRET,
+      grant_type: "authorization_code",
+      code: code,
     };
 
     axios
-      .post("https://connect.squareupsandbox.com/oauth2/token", {}, options)
+      .post("https://connect.squareupsandbox.com/oauth2/token", null, {
+        headers: headers,
+        params: params,
+      })
       .then((response) => console.log(response))
       .catch((err) => console.warn(err));
   };
@@ -36,7 +38,6 @@ const CallbackCheck = () => {
 
   // Catches any errors that might occur.
   // Also, prints outs on the page
-
   const handleRender = () => {
     if (query.state !== cookie.get("Auth_State")) {
       return (
