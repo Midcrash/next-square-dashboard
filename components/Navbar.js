@@ -3,8 +3,27 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import img from "../assets/imgs/bill.jpg";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, fetchUserName } from "../firebase/clientApp";
 
 function Navbar(props) {
+  const [user, loading, error] = useAuthState(auth);
+  const [username, setUsername] = useState("");
+  const doSomething = async () => {
+    setUsername(await fetchUserName(user?.uid));
+  };
+
+  useEffect(() => {
+    // if (user) console.log(user);
+    if (!username && !loading) {
+      doSomething();
+    }
+
+    if (username && !loading) {
+      console.log(username);
+    }
+    // console.log(fetchUserName(user?.uid));
+  }, [username, user]);
   const data = [
     {
       id: 1,
@@ -20,9 +39,9 @@ function Navbar(props) {
     },
     {
       id: 3,
-      name: "Customers",
+      name: "Connect",
       d: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
-      link: "/customers",
+      link: "/connect",
     },
     {
       id: 4,
@@ -47,8 +66,8 @@ function Navbar(props) {
   const router = useRouter();
 
   return (
-    <nav className="w-3/12" style={{ minHeight: "100vh" }}>
-      <div className="container flex flex-col justify-between h-full px-4 mx-auto">
+    <nav className="w-3/12">
+      <div className="flex flex-col justify-between h-screen px-4">
         <div>
           <div className="h-24">
             <span className="flex justify-center w-full h-full">
@@ -74,64 +93,67 @@ function Navbar(props) {
               </h1>
             </span>
           </div>
-          {data.map((datas) => (
-            <div
-              key={datas.id}
-              className={
-                router.asPath == datas.link
-                  ? "text-white bg-blue-700 rounded-xl m-2"
-                  : "m-2 text-stone-500"
-              }
-            >
-              <Link href={datas.link}>
-                <a>
-                  <div className="flex justify-start w-full px-4 py-2">
-                    <div className="flex justify-start w-1/6">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-8 h-8"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1}
+          <div>
+            {data.map((datas) => (
+              <div
+                key={datas.id}
+                className={
+                  router.asPath == datas.link
+                    ? "text-white bg-blue-700 rounded-xl m-2"
+                    : "m-2 text-stone-500 hover:bg-sky-200 rounded-xl"
+                }
+              >
+                <Link href={datas.link}>
+                  <a>
+                    <div className="flex justify-start w-full px-4 py-2">
+                      <div className="flex justify-start w-1/6">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-8 h-8"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d={datas.d}
+                          />
+                        </svg>
+                      </div>
+                      <p className="px-2 text-xl">{datas.name}</p>
+                      <div
+                        className={
+                          router.asPath == datas.link
+                            ? "hidden"
+                            : "flex justify-end w-full"
+                        }
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d={datas.d}
-                        />
-                      </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="self-center w-4 h-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
                     </div>
-                    <p className="px-2 text-xl">{datas.name}</p>
-                    <div
-                      className={
-                        router.asPath == datas.link
-                          ? "hidden"
-                          : "flex justify-end w-full"
-                      }
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="self-center w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </a>
-              </Link>
-            </div>
-          ))}
+                  </a>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col justify-center px-4 mb-12">
+
+        {/* <div className="flex flex-col justify-center px-4 mb-12">
           <div className="self-end w-full px-4 py-4 bg-gradient-to-r from-fuchsia-300 to-violet-600 rounded-2xl">
             <div className="flex flex-col text-center">
               <p className="text-lg font-semibold text-white">
@@ -141,35 +163,34 @@ function Navbar(props) {
                 Get Pro Now!
               </a>
             </div>
-          </div>
-          <div className="mt-12">
-            <div className="flex justify-between">
-              <div className="flex ">
-                <span className="self-center w-10 h-10 mx-2">
-                  <Image src={img} alt="pfp" className="rounded-full" />
-                </span>
-                <span className="flex flex-col">
-                  <p className="font-semibold">{props.user.email}</p>
-                  <p className="font-light text-gray-500">Project Manager</p>
-                </span>
-              </div>
-              <span className="flex">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="self-center w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+          </div> */}
+        <div className="mt-12 mb-14">
+          <div className="flex justify-between">
+            <div className="flex ">
+              <span className="self-center w-10 h-10 mx-2">
+                <img src={img} alt="pfp" className="rounded-full" />
+              </span>
+              <span className="flex flex-col">
+                <p className="font-semibold">{username}</p>
+                <p className="font-light text-gray-500">Project Manager</p>
               </span>
             </div>
+            <span className="flex">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="self-center w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </span>
           </div>
         </div>
       </div>

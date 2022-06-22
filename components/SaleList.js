@@ -77,7 +77,7 @@ const SaleList = () => {
             <div className="flex w-full pt-6" key={datas.id}>
               <div className="flex w-4/6 ">
                 <span className="relative w-1/6">
-                  <Image
+                  <img
                     src={img}
                     alt="item"
                     className="rounded-xl"

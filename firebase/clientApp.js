@@ -13,6 +13,8 @@ import {
   doc,
   getDoc,
   where,
+  query,
+  getDocs,
 } from "firebase/firestore";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
@@ -60,15 +62,19 @@ const logOut = () => {
 
 const fetchUserName = async (user) => {
   try {
-    const docRef = doc(db, "users", where("uid", "==", user?.uid));
-    const docSnap = await getDoc(docRef);
+    console.log(user);
+    const q = query(collection(db, "users"), where("uid", "==", user));
+    const docSnap = await getDocs(q);
+    const data = docSnap.docs[0].data();
 
-    if (docSnap.exists()) {
-      console.log(docSnap.data());
+    if (docSnap.docs.length === 0) {
+      console.log("I'm empty");
     } else {
-      console.log("No such document");
+      console.log(data.name);
+      return data.name;
     }
   } catch (err) {
+    return err;
     alert(err);
   }
 };

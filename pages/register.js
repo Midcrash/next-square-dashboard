@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase/clientApp";
 
-const register = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -23,16 +23,18 @@ const register = () => {
     if (user) {
       router.push("/dashboard");
     }
-  }, [user, loading]);
+  }, [router, user, loading]);
 
   return (
     <div className="h-screen bg-slate-100">
       <div className="flex items-center justify-center h-full">
         <span className="flex flex-col bg-white rounded-xl h-[40%] w-[20%] items-center justify-evenly">
           <span className="flex flex-col  w-[80%]">
-            <h1 className="text-2xl font-bold">Let's create your account</h1>
+            <h1 className="text-2xl font-bold">
+              Let&apos;s create your account
+            </h1>
             <p className="text-gray-500 text-md">
-              Sign up for Dashboard it's fast and free!
+              Sign up for Dashboard it&apos;s fast and free!
             </p>
             <p className="text-gray-500 text-md">
               Already have an account?{" "}
@@ -88,4 +90,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;

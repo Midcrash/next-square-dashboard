@@ -3,7 +3,7 @@ import Overview from "./Overview";
 import SaleList from "./SaleList";
 import TopBar from "./TopBar";
 
-function Dashboard() {
+function Dashboards() {
   return (
     <div className="w-full bg-slate-100" style={{ minHeight: "100vh" }}>
       <div className="container h-full px-12 pt-12 mx-auto">
@@ -37,4 +37,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashboards;
