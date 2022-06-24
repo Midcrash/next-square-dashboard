@@ -2,35 +2,42 @@ import React, { useEffect, useState } from "react";
 import cookie from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, storeSquareInfo } from "../firebase/clientApp";
 
 const CallbackCheck = () => {
+  const [user, loading, error] = useAuthState(auth);
   // Hydration error fix, More line 30
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    if (user !== null) setMounted(true);
+  }, [user]);
 
   const { query } = useRouter();
 
   // Obtain Square Token using a POST request
   const obtainToken = async (code) => {
-    const headers = {
-      "Square-Version": "2022-06-16",
-      "Content-Type": "application/json",
-    };
+    // Send Code and UID to callback
+    const response = await fetch("/api/callback", {
+      method: "POST",
+      body: JSON.stringify({ code, user: user.uid }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    const params = {
-      client_id: process.env.NEXT_PUBLIC_SQ_APPLICATION_ID,
-      client_secret: process.env.NEXT_PUBLIC_SQ_APPLICATION_SECRET,
-      grant_type: "authorization_code",
-      code: code,
-    };
-
-    axios
-      .post("https://connect.squareupsandbox.com/oauth2/token", null, {
-        headers: headers,
-        params: params,
-      })
-      .then((response) => console.log(response))
-      .catch((err) => console.warn(err));
+    const data = response
+      .json()
+      .then((result) =>
+        storeSquareInfo(
+          result.accessToken,
+          result.expiresAt,
+          result.merchantId,
+          result.refreshToken,
+          user.uid
+        )
+      )
+      .catch((err) => console.log(err));
   };
 
   // Hydration Error fix
@@ -81,8 +88,18 @@ const CallbackCheck = () => {
         );
       }
     } else if ("code" === query.response_type) {
+      // Obtain token when authorization is successful
       return (
-        <button onClick={() => obtainToken(query.code)}>obtainToken</button>
+        <div
+          className="container h-screen p-4 mx-auto"
+          onLoad={obtainToken(query.code)}
+        >
+          <div className="flex items-center justify-center h-full">
+            <div className="flex flex-col justify-center items-center bg-green-500 h-[50%] w-[75%]">
+              <p>Authorization Successful</p>
+            </div>
+          </div>
+        </div>
       );
     } else {
       return (

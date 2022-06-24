@@ -15,6 +15,7 @@ import {
   where,
   query,
   getDocs,
+  setDoc,
 } from "firebase/firestore";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
@@ -79,10 +80,59 @@ const fetchUserName = async (user) => {
   }
 };
 
+const storeSquareInfo = async (
+  accessToken,
+  expiresAt,
+  merchantId,
+  refreshToken,
+  user
+) => {
+  // Create Ref to SquareInfo
+  const squareRef = collection(db, "SquareInfo");
+  // Create query against collection
+  const q = query(squareRef, where("merchantId", "==", merchantId));
+  const docSnap = await getDocs(q);
+
+  // If there is no matching merchant id print new document
+  if (docSnap.docs.length === 0) {
+    try {
+      await addDoc(collection(db, "SquareInfo"), {
+        uid: user,
+        accessToken: accessToken,
+        expiresAt: expiresAt,
+        merchantId: merchantId,
+        refreshToken: refreshToken,
+      });
+    } catch (err) {
+      console.warn(err.message);
+    }
+    // If the same Merchant ID replace the document with updated information
+  } else if (docSnap.docs.length >= 1) {
+    let id;
+    docSnap.forEach((snap) => {
+      id = snap.id;
+    });
+    try {
+      await setDoc(doc(db, "SquareInfo", id), {
+        uid: user,
+        accessToken: accessToken,
+        expiresAt: expiresAt,
+        merchantId: merchantId,
+        refreshToken: refreshToken,
+      });
+    } catch (err) {
+      console.warn(err);
+    }
+  } else {
+    console.log("idk wat happened");
+  }
+};
+
 export {
   registerWithEmailAndPassword,
   logInWithEmailAndPassword,
   auth,
   logOut,
   fetchUserName,
+  storeSquareInfo,
 };
