@@ -14,7 +14,7 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
   const hmac = crypto.createHmac("sha1", sigKey);
   hmac.update(notificationUrl + rawBody);
   const hash = hmac.digest("base64");
-
+  console.log(rawBody);
   console.log(hash);
   console.log(squareSignature);
   // compare to square signature
