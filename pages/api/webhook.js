@@ -24,7 +24,7 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // Use raw-body to get rawBody because nextjs dont work with it :(
-    const rawBody = getRawBody(req);
+    const rawBody = await getRawBody(req);
     req.setEncoding("utf8");
     req.on("data", function (chunk) {
       rawBody += chunk;
