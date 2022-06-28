@@ -21,7 +21,7 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
   return hash === squareSignature;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     // Use raw-body to get rawBody because nextjs dont work with it :(
     const rawBody = getRawBody(req);
