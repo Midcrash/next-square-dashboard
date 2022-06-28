@@ -1,6 +1,7 @@
 // The crypto module provides cryptographic functionality.
 const crypto = require("crypto");
 const http = require("http");
+const getRawBody = require("raw-body");
 
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
@@ -14,7 +15,6 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
   const hmac = crypto.createHmac("sha1", sigKey);
   hmac.update(notificationUrl + rawBody);
   const hash = hmac.digest("base64");
-  console.log(rawBody);
   console.log(hash);
   console.log(squareSignature);
   // compare to square signature
@@ -23,7 +23,8 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
 
 export default function handler(req, res) {
   if (req.method === "POST") {
-    let rawBody = "";
+    // Use raw-body to get rawBody because nextjs dont work with it :(
+    const rawBody = getRawBody(req);
     req.setEncoding("utf8");
     req.on("data", function (chunk) {
       rawBody += chunk;
