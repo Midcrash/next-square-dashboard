@@ -39,7 +39,8 @@ export default async function handler(req, res) {
     if (eventIsFromSquare) {
       res.writeHead(200);
       res.write("Signature is valid. \n");
-      console.log(res.body);
+      console.log(res);
+      console.log(req);
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");
