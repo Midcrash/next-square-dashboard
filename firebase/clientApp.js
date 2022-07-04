@@ -90,7 +90,11 @@ const storeSquareInfo = async (
   // Create Ref to SquareInfo
   const squareRef = collection(db, "SquareInfo");
   // Create query against collection
-  const q = query(squareRef, where("merchantId", "==", merchantId));
+  const q = query(
+    squareRef,
+    where("merchantId", "==", merchantId),
+    where("uid", "==", user)
+  );
   const docSnap = await getDocs(q);
 
   // If there is no matching merchant id print new document
@@ -127,6 +131,8 @@ const storeSquareInfo = async (
     console.log("idk wat happened");
   }
 };
+
+const storePayments = () => {};
 
 export {
   registerWithEmailAndPassword,
