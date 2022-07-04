@@ -2,6 +2,7 @@
 const crypto = require("crypto");
 const http = require("http");
 const getRawBody = require("raw-body");
+const bodyParser = require("body-parser");
 
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
@@ -15,8 +16,6 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
   const hmac = crypto.createHmac("sha1", sigKey);
   hmac.update(notificationUrl + rawBody);
   const hash = hmac.digest("base64");
-  console.log(hash);
-  console.log(squareSignature);
   // compare to square signature
   return hash === squareSignature;
 }
@@ -39,7 +38,8 @@ export default async function handler(req, res) {
     if (eventIsFromSquare) {
       res.writeHead(200);
       res.write("Signature is valid. \n");
-      // You don't need Json.parse if body parser was true
+      console.log(bodyParser.json());
+      console.log(JSON.stringify(req.body));
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");
