@@ -39,7 +39,8 @@ export default async function handler(req, res) {
     if (eventIsFromSquare) {
       res.writeHead(200);
       res.write("Signature is valid. \n");
-      console.log(req.body);
+      // You don't need Json.parse if body parser was true
+      console.log(JSON.parse(req.body));
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");
