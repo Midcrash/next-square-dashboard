@@ -1,11 +1,9 @@
-import { text } from "body-parser";
-
 // The crypto module provides cryptographic functionality.
 const crypto = require("crypto");
 const http = require("http");
 const getRawBody = require("raw-body");
 const bodyParser = require("body-parser");
-const { buffer, txt } = requre("micro");
+const { buffer, text } = require("micro");
 
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
