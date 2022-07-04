@@ -14,11 +14,13 @@ const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
 const SIG_KEY = process.env.NEXT_PUBLIC_SIGNATURE_KEY;
 
 // Function to generate signature from url and body and compare to square signature.
-function isFromSquare(sigKey, notificationUrl, squareSignature, rawBody) {
+function isFromSquare(sigKey, notificationUrl, squareSignature, buf) {
   // create hmac signature
   const hmac = crypto.createHmac("sha1", sigKey);
-  hmac.update(notificationUrl + rawBody);
+  hmac.update(notificationUrl + buf);
   const hash = hmac.digest("base64");
+  console.log(hash);
+  console.log(squareSignature);
   // compare to square signature
   return hash === squareSignature;
 }
@@ -30,6 +32,7 @@ export default async function handler(req, res) {
     // req.setEncoding("utf8");
 
     const buf = await buffer(req);
+    console.log(buf);
 
     req.on("data", function (chunk) {
       //rawBody += chunk;
