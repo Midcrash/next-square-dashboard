@@ -42,7 +42,14 @@ export default async function handler(req, res) {
       const js = await json(req);
       console.log(js);
       // Store payments if event auth is returns true
-      storePayments(js.merchant_id, js.created_at, js.event_id, js.data);
+      storePayments(
+        js.merchant_id,
+        js.created_at,
+        js.event_id,
+        js.data.id,
+        js.data.object.payment.id,
+        js.data.object.payment.amount_money.amount
+      );
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");
