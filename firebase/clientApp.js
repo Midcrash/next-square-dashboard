@@ -139,7 +139,7 @@ const storePayments = async (
   event_id,
   data_id,
   payment_id,
-  data_amount
+  data_payment_amount
 ) => {
   try {
     await addDoc(collection(db, "SquarePayments"), {
