@@ -132,7 +132,19 @@ const storeSquareInfo = async (
   }
 };
 
-const storePayments = () => {};
+// Storing payments from Square webhook
+const storePayments = async (merchantId, createdAt, eventId, data) => {
+  try {
+    await addDoc(collection(db, "SquarePayments"), {
+      merchantId,
+      createdAt,
+      eventId,
+      data,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export {
   registerWithEmailAndPassword,
@@ -141,4 +153,5 @@ export {
   logOut,
   fetchUserName,
   storeSquareInfo,
+  storePayments,
 };
