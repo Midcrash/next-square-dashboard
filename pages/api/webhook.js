@@ -2,8 +2,8 @@
 const crypto = require("crypto");
 const http = require("http");
 const { buffer, text, json } = require("micro");
-import { storePayments } from "../../firebase/clientApp";
-
+import { storePayments, db } from "../../firebase/clientApp";
+const firebase = require("firebase");
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
 
@@ -41,14 +41,21 @@ export default async function handler(req, res) {
       res.write("Signature is valid. \n");
       const js = await json(req);
       // Store payments if event auth is returns true
-      storePayments(
-        js.merchant_id,
-        js.created_at,
-        js.event_id,
-        js.data.id,
-        js.data.object.payment.id,
-        js.data.object.payment.amount_money.amount
-      );
+      db.collection("SquarePayments")
+        .add({
+          merchant_id: js.merchant_id,
+          created_at: js.created_at,
+          event_id: js.event_id,
+          data_id: js.data.id,
+          payment_id: js.data.object.payment.id,
+          data_payment_amount: js.data.object.payment.amount_money.amount,
+        })
+        .then((docRef) => {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+          console.error("Error adding document: ", error);
+        });
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");

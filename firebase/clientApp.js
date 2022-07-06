@@ -175,4 +175,5 @@ export {
   fetchUserName,
   storeSquareInfo,
   storePayments,
+  db,
 };
