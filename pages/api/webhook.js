@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const http = require("http");
 const { buffer, text, json } = require("micro");
 import { storePayments, db } from "../../firebase/clientApp";
+var firebase = require("firebase");
 
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
