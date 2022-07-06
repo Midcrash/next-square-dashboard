@@ -19,7 +19,7 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, buf) {
   // compare to square signature
   return hash === squareSignature;
 }
-
+//
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // This creates the rawBody equivalent
