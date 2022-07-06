@@ -150,14 +150,16 @@ const storePayments = async (
       payment_id,
       data_payment_amount
     );
-    await addDoc(collection(db, "SquarePayments"), {
+    const collectionRef = collection(db, "SquarePayments");
+    const payload = {
       merchant_id,
       created_at,
       event_id,
       data_id,
       payment_id,
       data_payment_amount,
-    });
+    };
+    await addDoc(collectionRef, payload);
   } catch (err) {
     console.log(err);
     console.warn(err);
