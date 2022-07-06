@@ -20,6 +20,7 @@ const scopes = [
   "PAYMENTS_READ",
 ];
 
+// Send back URL for button @ connect page
 export default function handler(req, res) {
   var state = md5(Date.now());
   var url =

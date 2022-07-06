@@ -97,7 +97,7 @@ const storeSquareInfo = async (
   );
   const docSnap = await getDocs(q);
 
-  // If there is no matching merchant id print new document
+  // If there is no matching merchant id add new document
   if (docSnap.docs.length === 0) {
     try {
       await addDoc(collection(db, "SquareInfo"), {
@@ -142,16 +142,17 @@ const storePayments = async (
   data_payment_amount
 ) => {
   try {
-    await addDoc(collection(db, "SquarePayments"), {
-      merchant_id: merchant_id,
-      created_at: created_at,
-      event_id: event_id,
+    const docRef = await addDoc(collection(db, "SquarePayments"), {
+      merchant_id,
+      created_at,
+      event_id,
       data: {
-        data_id: data_id,
-        payment_id: payment_id,
-        data_payment_amount: data_payment_amount,
+        data_id,
+        payment_id,
+        data_payment_amount,
       },
     });
+    console.log(docRef.id);
   } catch (err) {
     console.log(err);
     console.warn(err);
