@@ -11,6 +11,8 @@ const {
   Timestamp,
   FieldValue,
 } = require("firebase-admin/firestore");
+
+// Generate new private key under firebase project settings service accounts
 var serviceAccount = {
   type: process.env.NEXT_PUBLIC_TYPE,
   project_id: process.env.NEXT_PUBLIC_PROJECT_ID,
@@ -70,7 +72,7 @@ export default async function handler(req, res) {
       const js = await json(req);
       console.log(js);
       // Store payments if event auth is returns true
-      const docRef = db.collection("SquarePayments");
+      const docRef = db.collection("SquarePayments").set(js.event_id);
 
       await docRef.set({
         merchant_id: js.merchant_id,
