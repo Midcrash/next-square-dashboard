@@ -142,23 +142,14 @@ const storePayments = async (
   data_payment_amount
 ) => {
   try {
-    console.log(
-      "hi",
-      merchant_id,
-      created_at,
-      event_id,
-      data_id,
-      payment_id,
-      data_payment_amount
-    );
     await addDoc(collection(db, "SquarePayments"), {
-      merchant_id,
-      created_at,
-      event_id,
+      merchant_id: merchant_id,
+      created_at: created_at,
+      event_id: event_id,
       data: {
-        data_id,
-        data_payment_amount,
-        payment_id,
+        data_id: data_id,
+        payment_id: payment_id,
+        data_payment_amount: data_payment_amount,
       },
     });
   } catch (err) {
