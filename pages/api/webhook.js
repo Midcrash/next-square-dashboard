@@ -70,7 +70,7 @@ export default async function handler(req, res) {
       const js = await json(req);
       console.log(js);
       // Store payments if event auth is returns true
-      const docRef = db.collection("SquarePayments").doc("new-payment-id");
+      const docRef = db.collection("SquarePayments");
 
       await docRef.set({
         merchant_id: js.merchant_id,
