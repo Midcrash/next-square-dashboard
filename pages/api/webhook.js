@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const http = require("http");
 const { buffer, text, json } = require("micro");
 import { storePayments, db } from "../../firebase/clientApp";
-var firebase = require("firebase");
+require("firebase/firestore");
 
 // The URL where event notifications are sent.
 const NOTIFICATION_URL = "https://next-square-dashboard.vercel.app/api/webhook";
@@ -20,7 +20,7 @@ function isFromSquare(sigKey, notificationUrl, squareSignature, buf) {
   // compare to square signature
   return hash === squareSignature;
 }
-//
+
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // This creates the rawBody equivalent
@@ -41,22 +41,26 @@ export default async function handler(req, res) {
       res.writeHead(200);
       res.write("Signature is valid. \n");
       const js = await json(req);
+      console.log(js);
       // Store payments if event auth is returns true
-      db.collection("SquarePayments")
-        .add({
-          merchant_id: js.merchant_id,
-          created_at: js.created_at,
-          event_id: js.event_id,
-          data_id: js.data.id,
-          payment_id: js.data.object.payment.id,
-          data_payment_amount: js.data.object.payment.amount_money.amount,
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
+      const docRef = db.collection("SquarePayments");
+
+      await docRef.set({
+        merchant_id: js.merchant_id,
+        created_at: js.created_at,
+        event_id: js.event_id,
+        data_id: js.data.id,
+        payment_id: js.data.object.payment.id,
+        data_payment_amount: js.data.object.payment.amount_money.amount,
+      });
+      storePayments(
+        js.merchant_id,
+        js.created_at,
+        js.event_id,
+        js.data.id,
+        js.data.object.payment.id,
+        js.data.object.payment.amount_money.amount
+      );
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");
