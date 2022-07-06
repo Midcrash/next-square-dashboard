@@ -142,7 +142,7 @@ const storePayments = async (
   data_payment_amount
 ) => {
   try {
-    const docRef = await addDoc(collection(db, "SquarePayments"), {
+    await addDoc(collection(db, "SquarePayments"), {
       merchant_id,
       created_at,
       event_id,
@@ -152,7 +152,6 @@ const storePayments = async (
         data_payment_amount,
       },
     });
-    console.log(docRef.id);
   } catch (err) {
     console.log(err);
     console.warn(err);
