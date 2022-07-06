@@ -159,7 +159,8 @@ const storePayments = async (
       payment_id,
       data_payment_amount,
     };
-    await addDoc(collectionRef, payload);
+    const docRef = await addDoc(collectionRef, payload);
+    console.log(docRef);
   } catch (err) {
     console.log(err);
     console.warn(err);
