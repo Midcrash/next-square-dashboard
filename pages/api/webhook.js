@@ -4,6 +4,7 @@ const http = require("http");
 const { buffer, text, json } = require("micro");
 // import { storePayments, db } from "../../firebase/clientApp";
 
+// Initalize server side firebase
 const { initializeApp, cert } = require("firebase-admin/app");
 const {
   getFirestore,
