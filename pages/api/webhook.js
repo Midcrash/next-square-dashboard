@@ -4,18 +4,14 @@ const http = require("http");
 const { buffer, text, json } = require("micro");
 // import { storePayments, db } from "../../firebase/clientApp";
 
-const {
-  initializeApp,
-  applicationDefault,
-  cert,
-} = require("firebase-admin/app");
-const {
-  getFirestore,
-  Timestamp,
-  FieldValue,
-} = require("firebase-admin/firestore");
+const { initializeApp, cert } = require("firebase-admin/app");
 
-initializeApp();
+var serviceAccount = require("../../data/next-dashboard-e43a9-firebase-adminsdk-uer1o-0746c35399.json");
+
+initializeApp({
+  credential: cert(serviceAccount),
+  databaseURL: "https://next-dashboard.firebaseio.com",
+});
 
 const db = getFirestore();
 
