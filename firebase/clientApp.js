@@ -88,7 +88,7 @@ const storeSquareInfo = async (
   refreshToken,
   user
 ) => {
-  console.log(user);
+  console.log(merchantId);
   // Create Ref to SquareInfo
   const squareRef = collection(db, "SquareInfo");
   // Create query against collection

@@ -28,15 +28,16 @@ const CallbackCheck = () => {
 
     const data = response
       .json()
-      .then((result) =>
+      .then((result) => {
+        console.log(result);
         storeSquareInfo(
           result.accessToken,
           result.expiresAt,
           result.merchantId,
           result.refreshToken,
           user.uid
-        )
-      )
+        );
+      })
       .catch((err) => console.log(err));
   };
 
