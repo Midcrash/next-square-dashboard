@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import img from "../assets/imgs/food.jpg";
+import { fetchPayments } from "../firebase/clientApp";
 
 const SaleList = () => {
   const data = [

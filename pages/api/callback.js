@@ -4,7 +4,7 @@ const { ApiError, Client, Environment } = require("square");
 // Have to use Server side to send POST request for Square API
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    let environment = Environment.Sandbox;
+    let environment = Environment.Production;
     const squareClient = new Client({
       environment: environment,
     });

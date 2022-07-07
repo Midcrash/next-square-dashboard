@@ -9,14 +9,14 @@ import { auth, fetchUserName } from "../firebase/clientApp";
 function Navbar(props) {
   const [user, loading, error] = useAuthState(auth);
   const [username, setUsername] = useState("");
-  const doSomething = async () => {
+  const initializeUsername = async () => {
     setUsername(await fetchUserName(user?.uid));
   };
 
   useEffect(() => {
     // if (user) console.log(user);
     if (!username && !loading) {
-      doSomething();
+      initializeUsername();
     }
 
     if (username && !loading) {

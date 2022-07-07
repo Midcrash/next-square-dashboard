@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Overview from "./Overview";
 import SaleList from "./SaleList";
 import TopBar from "./TopBar";
+import { fetchPayments, auth } from "../firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Dashboards() {
+  const [user, loading, error] = useAuthState(auth);
+  useEffect(() => {
+    if (!loading) {
+      fetchPayments(user.uid);
+    }
+  }, [loading]);
   return (
     <div className="w-full bg-slate-100" style={{ minHeight: "100vh" }}>
       <div className="container h-full px-12 pt-12 mx-auto">

@@ -16,6 +16,7 @@ import {
   query,
   getDocs,
   setDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 
@@ -167,6 +168,50 @@ const storePayments = async (
   }
 };
 
+// Fetch square information from Firebase
+const fetchSquareInfo = async (uid) => {
+  const q = query(collection(db, "SquareInfo"), where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+  // Store multiple merchant ID
+  const merchantIdArray = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.get("merchantId"));
+    merchantIdArray.push(doc.get("merchantId"));
+  });
+  return merchantIdArray;
+};
+
+// Fetch Payments
+const fetchPayments = async (uid) => {
+  const merchantIdArray = fetchSquareInfo(uid);
+  const paymentRef = collection(db, "SquarePayments");
+
+  // Fetch payments using for loop because user might have multiple square accs connected
+  (await merchantIdArray).forEach(async (merchantId) => {
+    const q = query(paymentRef, where("merchant_id", "==", merchantId));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.get("event_id"));
+      });
+    }
+  });
+
+  try {
+    // const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    //   const payments = [];
+    //   querySnapshot.forEach((doc) => {
+    //     payments.push(doc.data().name);
+    //   });
+    //   console.log("Current payments in CA: ", payments.join(", "));
+    // });
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
 export {
   registerWithEmailAndPassword,
   logInWithEmailAndPassword,
@@ -176,4 +221,5 @@ export {
   storeSquareInfo,
   storePayments,
   db,
+  fetchPayments,
 };
