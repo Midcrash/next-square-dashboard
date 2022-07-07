@@ -62,6 +62,7 @@ const logOut = () => {
   signOut(auth);
 };
 
+// Fetch user name from firebase with UID
 const fetchUserName = async (user) => {
   try {
     console.log(user);
