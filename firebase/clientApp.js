@@ -88,6 +88,7 @@ const storeSquareInfo = async (
   refreshToken,
   user
 ) => {
+  console.log("made it here");
   // Create Ref to SquareInfo
   const squareRef = collection(db, "SquareInfo");
   // Create query against collection
