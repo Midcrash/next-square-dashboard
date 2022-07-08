@@ -33,6 +33,7 @@ export default async function handler(req, res) {
         environment: environment,
         accessToken: accessToken,
       });
+      console.log("test");
       try {
         const response = await client.catalogApi.listCatalog();
 

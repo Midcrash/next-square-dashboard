@@ -134,32 +134,24 @@ const storeSquareInfo = async (
   }
 };
 
-// Storing payments from Square webhook
-const storePayments = async (
+// Storing Order from Square webhook
+const storeOrder = async (
   merchant_id,
   created_at,
   event_id,
   data_id,
-  payment_id,
-  data_payment_amount
+  location_id,
+  order_id
 ) => {
   try {
-    console.log(
-      merchant_id,
-      created_at,
-      event_id,
-      data_id,
-      payment_id,
-      data_payment_amount
-    );
     const collectionRef = collection(db, "SquarePayments");
     const payload = {
       merchant_id,
       created_at,
       event_id,
       data_id,
-      payment_id,
-      data_payment_amount,
+      location_id,
+      order_id,
     };
     const docRef = await addDoc(collectionRef, payload);
     console.log(docRef);
@@ -220,7 +212,7 @@ export {
   logOut,
   fetchUserName,
   storeSquareInfo,
-  storePayments,
+  storeOrder,
   db,
   fetchPayments,
 };
