@@ -29,7 +29,6 @@ const CallbackCheck = () => {
     const data = response
       .json()
       .then((result) => {
-        console.log(result);
         storeSquareInfo(
           result.accessToken,
           result.expiresAt,

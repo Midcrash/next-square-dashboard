@@ -68,26 +68,18 @@ export default async function handler(req, res) {
       res.writeHead(200);
       res.write("Signature is valid. \n");
       const js = await json(req);
-      console.log(js);
       // Store payments if event auth is returns true
-      const docRef = db.collection("SquarePayments").doc();
-
-      await docRef.set({
-        merchant_id: js.merchant_id,
-        created_at: js.created_at,
-        event_id: js.event_id,
-        data_id: js.data.id,
-        payment_id: js.data.object.payment.id,
-        data_payment_amount: js.data.object.payment.amount_money.amount,
-      });
-      // storePayments(
-      //   js.merchant_id,
-      //   js.created_at,
-      //   js.event_id,
-      //   js.data.id,
-      //   js.data.object.payment.id,
-      //   js.data.object.payment.amount_money.amount
-      // );
+      if (js.type === "order.created") {
+        const docRef = db.collection("SquareOrders").doc();
+        await docRef.set({
+          merchant_id: js.merchant_id,
+          created_at: js.created_at,
+          event_id: js.event_id,
+          data_id: js.data.id,
+          location_id: js.data.object.order_created.location_id,
+          order_id: js.data.object.order_created.order_id,
+        });
+      }
     } else {
       res.writeHead(400);
       res.write("Signature is not valid \n");

@@ -28,6 +28,19 @@ export default async function handler(req, res) {
         merchantId,
       } = result;
 
+      // Store Square Catalog using Catalog API and User's accessToken
+      const client = new Client({
+        environment: environment,
+        accessToken: accessToken,
+      });
+      try {
+        const response = await client.catalogApi.listCatalog();
+
+        console.log(response.result);
+      } catch (error) {
+        console.log(error);
+      }
+
       res
         .status(201)
         .json({ accessToken, refreshToken, expiresAt, merchantId });
