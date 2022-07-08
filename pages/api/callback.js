@@ -37,7 +37,6 @@ export default async function handler(req, res) {
       try {
         const response = await client.catalogApi.listCatalog();
         // Store json information with json variable item_data
-        console.log(response.objects.item_data);
         // console.log(response.result);
       } catch (error) {
         console.log(error);
