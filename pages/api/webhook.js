@@ -52,8 +52,6 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     // This creates the rawBody equivalent
     const buf = await buffer(req);
-    console.log(buf);
-
     req.on("data", function (chunk) {
       buf += chunk;
     });
@@ -69,6 +67,7 @@ export default async function handler(req, res) {
       res.write("Signature is valid. \n");
       const js = await json(req);
       // Store payments if event auth is returns true
+      console.log(js);
       if (js.type === "order.created") {
         const docRef = db.collection("SquareOrders").doc();
         await docRef.set({
