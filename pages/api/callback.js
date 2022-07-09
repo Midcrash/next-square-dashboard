@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { ApiError, Client, Environment } = require("square");
+import { db, storeMenu } from "./serverApp";
 
 // Have to use Server side to send POST request for Square API
 export default async function handler(req, res) {
@@ -37,8 +38,12 @@ export default async function handler(req, res) {
       try {
         const response = await client.catalogApi.listCatalog();
         // Store json information with json variable item_data
+
         response.result.objects.forEach((obj) => {
-          console.log(obj.itemData);
+          if (!obj.itemData == undefined || null) {
+            storeMenu(obj.itemData);
+            console.log(obj.itemData);
+          }
         });
         // console.log(response.result);
       } catch (error) {
