@@ -67,8 +67,10 @@ export default async function handler(req, res) {
       res.write("Signature is valid. \n");
       const js = await json(req);
       // Store payments if event auth is returns true
-      console.log(js);
+      console.log(js.type);
+      console.log(js.data.object.order_created.order_id);
       if (js.type === "order.created") {
+        console.log("location id" + js.data.object.order_created.location_id);
         const docRef = db.collection("SquareOrders").doc();
         await docRef.set({
           merchant_id: js.merchant_id,
