@@ -40,7 +40,7 @@ export default async function handler(req, res) {
         // Store json information with json variable item_data
 
         response.result.objects.forEach((obj) => {
-          if (!obj.itemData === undefined || null) {
+          if (obj.itemData !== undefined || null) {
             storeMenu(obj.itemData);
             console.log(obj.itemData);
           }
