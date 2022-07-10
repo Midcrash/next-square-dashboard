@@ -12,13 +12,7 @@ if (process.env.NEXT_PUBLIC_SQ_ENVIRONMENT.toLowerCase() === "production") {
   process.exit(1);
 }
 
-const scopes = [
-  "ITEMS_READ",
-  "MERCHANT_PROFILE_READ",
-  "PAYMENTS_WRITE_ADDITIONAL_RECIPIENTS",
-  "PAYMENTS_WRITE",
-  "PAYMENTS_READ",
-];
+const scopes = ["ITEMS_READ", "MERCHANT_PROFILE_READ", "ORDERS_READ"];
 
 // Send back URL for button @ connect page
 export default function handler(req, res) {

@@ -42,10 +42,11 @@ const storeOrders = async (js) => {
 const storeMenu = async (itemData) => {
   console.log("store menu");
   const docRef = db.collection("SquareMenu").doc();
-  await docRef.set({
-    name: itemData.name,
-    price: itemData.item_variation_data.price_money.amount,
-  });
+  console.log(itemData);
+  // await docRef.set({
+  //   name: itemData.name,
+  //   price: itemData.item_variation_data.price_money.amount,
+  // });
 };
 
 export { db, storeOrders, storeMenu };
