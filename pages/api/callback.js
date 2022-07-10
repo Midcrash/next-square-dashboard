@@ -42,7 +42,6 @@ export default async function handler(req, res) {
         response.result.objects.forEach((obj) => {
           if (obj.itemData !== undefined || null) {
             storeMenu(obj.itemData);
-            console.log(obj.itemData);
           }
         });
         // console.log(response.result);
