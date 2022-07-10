@@ -42,11 +42,11 @@ const storeOrders = async (js) => {
 const storeMenu = async (itemData) => {
   console.log("store menu");
   console.log(itemData.name);
-  console.log(itemData.ecom_image_uris);
+  console.log(itemData.ecom_image_uris[0]);
   const docRef = db.collection("SquareMenu").doc();
   await docRef.set({
     name: itemData.name,
-    image_url: itemData.ecom_image_uris,
+    image_url: itemData.ecom_image_uris[0],
   });
 };
 
