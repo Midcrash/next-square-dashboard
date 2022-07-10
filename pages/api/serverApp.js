@@ -41,8 +41,7 @@ const storeOrders = async (js) => {
 
 const storeMenu = async (itemData) => {
   console.log(itemData.name);
-  const url = JSON.parse(itemData);
-  console.log(url);
+  console.log(itemData);
   // const docRef = db.collection("SquareMenu").doc();
   // await docRef.set({
   //   name: itemData.name,
