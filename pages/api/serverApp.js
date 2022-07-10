@@ -41,10 +41,8 @@ const storeOrders = async (js) => {
 
 const storeMenu = async (itemData) => {
   console.log(itemData.name);
-  itemData.ecom_image_uris.forEach((data) => {
-    console.log(data);
-  });
-  console.log();
+  const url = JSON.parse(itemData);
+  console.log(url);
   // const docRef = db.collection("SquareMenu").doc();
   // await docRef.set({
   //   name: itemData.name,
