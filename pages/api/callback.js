@@ -39,10 +39,19 @@ export default async function handler(req, res) {
         const response = await client.catalogApi.listCatalog();
         // Store json information with json variable item_data
 
-        response.result.objects.forEach((obj) => {
+        response.result.objects.forEach(async (obj) => {
           if (obj.itemData !== undefined || null) {
-            storeMenu(obj.itemData);
+            try {
+              const response = await client.catalogApi.retrieveCatalogObject(
+                itemData.image_ids
+              );
+
+              console.log(response.result);
+            } catch (error) {
+              console.log(error);
+            }
           }
+          storeMenu(obj.itemData);
         });
         // console.log(response.result);
       } catch (error) {
