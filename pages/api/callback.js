@@ -43,7 +43,7 @@ export default async function handler(req, res) {
           if (obj.itemData !== undefined || null) {
             try {
               const response = await client.catalogApi.retrieveCatalogObject(
-                itemData.image_ids
+                obj.itemData.imageIds
               );
 
               console.log(response.result);
