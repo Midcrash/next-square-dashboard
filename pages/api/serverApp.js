@@ -39,8 +39,16 @@ const storeOrders = async (js) => {
   }
 };
 
-const storeMenu = async (itemData) => {
-  console.dir(itemData);
+const storeMenu = async (itemData, client) => {
+  try {
+    const response = await client.catalogApi.retrieveCatalogObject(
+      itemData.image_ids
+    );
+
+    console.log(response.result);
+  } catch (error) {
+    console.log(error);
+  }
   // const docRef = db.collection("SquareMenu").doc();
   // await docRef.set({
   //   name: itemData.name,
